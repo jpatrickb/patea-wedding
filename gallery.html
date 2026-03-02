@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Photos — Thea & Patrick</title>
+
+  <style>
+    /* === Fonts === */
+    @font-face {
+      font-family: 'Nickainley';
+      src: url('assets/fonts/nickainley.regular.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'Catchy Mager';
+      src: url('assets/fonts/catchy-mager.regular.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    /* === Design Tokens === */
+    :root {
+      --color-bg: #F4C6CF;
+      --color-text: #242241;
+      --color-text-secondary: #4A1F3A;
+      --color-accent: #B0185C;
+      --color-constellation-line: #4A1F3A;
+      --color-constellation-dot: #E63A6E;
+      --color-star: #FFFFFF;
+      --color-card-bg: rgba(255, 255, 255, 0.35);
+      --color-nav-bg: rgba(244, 198, 207, 0.85);
+      --color-rsvp-bg: rgba(74, 31, 58, 0.07);
+      --font-script: 'Nickainley', cursive;
+      --font-serif: 'Catchy Mager', Georgia, serif;
+      --ease: 0.3s ease;
+      --radius: 14px;
+      --max-width: 1100px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --color-bg: #242241;
+        --color-text: #F4C6CF;
+        --color-text-secondary: #C16FA7;
+        --color-accent: #E63A6E;
+        --color-constellation-line: #C16FA7;
+        --color-constellation-dot: #E63A6E;
+        --color-star: #E6B65C;
+        --color-card-bg: rgba(255, 255, 255, 0.06);
+        --color-nav-bg: rgba(36, 34, 65, 0.88);
+        --color-rsvp-bg: rgba(193, 111, 167, 0.07);
+      }
+    }
+
+    /* === Reset === */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-serif);
+      background-color: var(--color-bg);
+      color: var(--color-text);
+      line-height: 1.7;
+      overflow-x: hidden;
+      transition: background-color var(--ease), color var(--ease);
+      min-height: 100vh;
+    }
+
+    /* === Header === */
+    .gallery-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      height: 62px;
+      background: var(--color-nav-bg);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(128, 128, 128, 0.12);
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background var(--ease);
+    }
+
+    .header-back {
+      font-family: var(--font-serif);
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: opacity var(--ease);
+      white-space: nowrap;
+    }
+
+    .header-back:hover {
+      opacity: 0.75;
+    }
+
+    .header-title {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      text-align: center;
+      pointer-events: none;
+    }
+
+    .header-title-names {
+      font-family: var(--font-script);
+      font-size: 1.35rem;
+      color: var(--color-text);
+      letter-spacing: 0.02em;
+      line-height: 1.1;
+      display: block;
+    }
+
+    .header-title-sub {
+      font-family: var(--font-serif);
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--color-text-secondary);
+      display: block;
+      margin-top: 1px;
+    }
+
+    /* === Main === */
+    main {
+      padding-top: 1.5rem;
+      padding-bottom: 4rem;
+    }
+
+    /* === Gallery Grid === */
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 12px;
+      padding: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .gallery-thumb {
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+      cursor: pointer;
+      border-radius: 10px;
+      transition: transform var(--ease), box-shadow var(--ease);
+    }
+
+    .gallery-thumb:hover {
+      transform: scale(1.03);
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.22);
+    }
+
+    .gallery-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .gallery-empty {
+      grid-column: 1 / -1;
+      text-align: center;
+      color: var(--color-text-secondary);
+      font-size: 1rem;
+      padding: 2rem;
+      margin: 0;
+    }
+
+    /* === Lightbox === */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.92);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .lightbox.hidden {
+      display: none;
+    }
+
+    .lightbox__img {
+      max-height: 90vh;
+      max-width: 90vw;
+      object-fit: contain;
+      border-radius: 6px;
+      display: block;
+    }
+
+    .lightbox__prev,
+    .lightbox__next {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 3rem;
+      color: white;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0 1.5rem;
+      opacity: 0.7;
+      transition: opacity var(--ease);
+      line-height: 1;
+      user-select: none;
+    }
+
+    .lightbox__prev {
+      left: 0;
+    }
+
+    .lightbox__next {
+      right: 0;
+    }
+
+    .lightbox__prev:hover,
+    .lightbox__next:hover {
+      opacity: 1;
+    }
+
+    .lightbox__close {
+      position: absolute;
+      top: 1rem;
+      right: 1.5rem;
+      font-size: 1.5rem;
+      color: white;
+      background: none;
+      border: none;
+      cursor: pointer;
+      opacity: 0.8;
+      transition: opacity var(--ease);
+      line-height: 1;
+    }
+
+    .lightbox__close:hover {
+      opacity: 1;
+    }
+
+    .lightbox__counter {
+      position: absolute;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 0.9rem;
+      font-family: var(--font-serif);
+      letter-spacing: 0.08em;
+      white-space: nowrap;
+    }
+
+    /* === Responsive === */
+    @media (max-width: 600px) {
+      .gallery-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 8px;
+        padding: 1rem;
+      }
+
+      .header-title-names {
+        font-size: 1.1rem;
+      }
+
+      .lightbox__prev,
+      .lightbox__next {
+        font-size: 2rem;
+        padding: 0 0.75rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="gallery-header">
+    <a class="header-back" href="index.html">&#8592; Back to Wedding</a>
+    <div class="header-title">
+      <span class="header-title-names">Thea &amp; Patrick</span>
+      <span class="header-title-sub">Photos</span>
+    </div>
+  </header>
+
+  <main>
+    <div class="gallery-grid" id="galleryGrid"></div>
+  </main>
+
+  <div id="lightbox" class="lightbox hidden">
+    <button class="lightbox__close" id="lightboxClose" aria-label="Close">&#x2715;</button>
+    <button class="lightbox__prev" id="lightboxPrev" aria-label="Previous">&#8249;</button>
+    <img class="lightbox__img" id="lightboxImg" src="" alt="" />
+    <button class="lightbox__next" id="lightboxNext" aria-label="Next">&#8250;</button>
+    <p class="lightbox__counter" id="lightboxCounter">1 / 8</p>
+  </div>
+
+  <script>
+    /**
+     * Images are embedded by the GitHub Action when you push.
+     * Add photos to assets/images/, push — the Action updates this file automatically.
+     * For local preview first: node scripts/build-gallery.js
+     */
+    const images = ["assets/images/1.jpg","assets/images/2.jpg","assets/images/3.jpg","assets/images/4.jpg","assets/images/5.jpg","assets/images/6.jpg","assets/images/8.jpg","assets/images/9.jpg","assets/images/10.JPG","assets/images/11.JPG","assets/images/12.JPG"];
+    let currentIndex = 0;
+
+    const grid       = document.getElementById('galleryGrid');
+    const lightbox   = document.getElementById('lightbox');
+    const lbImg      = document.getElementById('lightboxImg');
+    const lbCounter  = document.getElementById('lightboxCounter');
+    const lbClose    = document.getElementById('lightboxClose');
+    const lbPrev     = document.getElementById('lightboxPrev');
+    const lbNext     = document.getElementById('lightboxNext');
+
+    (function init() {
+      if (images.length === 0) {
+        const p = document.createElement('p');
+        p.className = 'gallery-empty';
+        p.textContent = 'No photos yet. Add images to assets/images/ and push to GitHub — they appear automatically. For local preview, run: node scripts/build-gallery.js';
+        grid.appendChild(p);
+        return;
+      }
+      images.forEach(function(src, index) {
+        const thumb = document.createElement('div');
+        thumb.className = 'gallery-thumb';
+        thumb.setAttribute('role', 'button');
+        thumb.setAttribute('tabindex', '0');
+        thumb.setAttribute('aria-label', 'Photo ' + (index + 1));
+
+        const img = document.createElement('img');
+        img.src = src;
+        img.alt = 'Photo ' + (index + 1);
+        img.loading = 'lazy';
+
+        thumb.appendChild(img);
+        thumb.addEventListener('click', function() { openLightbox(index); });
+        thumb.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            openLightbox(index);
+          }
+        });
+
+        grid.appendChild(thumb);
+      });
+    })();
+
+    function openLightbox(index) {
+      if (images.length === 0) return;
+      currentIndex = index;
+      lbImg.src = images[currentIndex];
+      lbImg.alt = 'Photo ' + (currentIndex + 1);
+      lbCounter.textContent = (currentIndex + 1) + ' / ' + images.length;
+      lightbox.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+      lbClose.focus();
+    }
+
+    function closeLightbox() {
+      lightbox.classList.add('hidden');
+      document.body.style.overflow = '';
+    }
+
+    function showPrev() {
+      if (images.length === 0) return;
+      currentIndex = (currentIndex - 1 + images.length) % images.length;
+      lbImg.src = images[currentIndex];
+      lbImg.alt = 'Photo ' + (currentIndex + 1);
+      lbCounter.textContent = (currentIndex + 1) + ' / ' + images.length;
+    }
+
+    function showNext() {
+      if (images.length === 0) return;
+      currentIndex = (currentIndex + 1) % images.length;
+      lbImg.src = images[currentIndex];
+      lbImg.alt = 'Photo ' + (currentIndex + 1);
+      lbCounter.textContent = (currentIndex + 1) + ' / ' + images.length;
+    }
+
+    lbClose.addEventListener('click', closeLightbox);
+    lbPrev.addEventListener('click', showPrev);
+    lbNext.addEventListener('click', showNext);
+
+    // Click outside image to close
+    lightbox.addEventListener('click', function(e) {
+      if (e.target === lightbox) {
+        closeLightbox();
+      }
+    });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', function(e) {
+      if (lightbox.classList.contains('hidden')) return;
+      if (e.key === 'Escape')      { closeLightbox(); }
+      else if (e.key === 'ArrowLeft')  { showPrev(); }
+      else if (e.key === 'ArrowRight') { showNext(); }
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,36 @@
+name: Update gallery on push
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - 'assets/images/**'
+      - 'gallery.html'
+      - 'scripts/build-gallery.js'
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Build gallery
+        run: node scripts/build-gallery.js
+
+      - name: Commit if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet gallery.html; then
+            echo "No changes"
+          else
+            git add gallery.html
+            git commit -m "chore: update gallery images"
+            git push
+          fi
