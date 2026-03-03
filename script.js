@@ -190,7 +190,12 @@ function initCarousel() {
   if (!carousel) return;
 
   // 1. Build image list and shuffle
-  const images = Array.from({ length: 8 }, (_, i) => `assets/images/${i + 1}.jpg`);
+  const images = [
+    'assets/images/1.jpg', 'assets/images/2.jpg', 'assets/images/3.jpg',
+    'assets/images/4.jpg', 'assets/images/5.jpg', 'assets/images/6.jpg',
+    'assets/images/7.jpg', 'assets/images/8.jpg', 'assets/images/9.jpg',
+    'assets/images/10.JPG', 'assets/images/11.JPG', 'assets/images/12.JPG'
+  ];
   shuffleArray(images);
 
   // 2. Inject slides
@@ -201,7 +206,7 @@ function initCarousel() {
     const img = document.createElement('img');
     img.src = src;
     img.alt = `Photo ${idx + 1}`;
-    img.loading = 'lazy';
+    img.loading = 'eager'; // eager: avoid lazy-load timing with hidden carousel slides
 
     div.appendChild(img);
     carousel.appendChild(div);
