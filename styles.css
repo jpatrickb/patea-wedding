@@ -742,15 +742,18 @@ section {
 
 .registry-embed-wrapper {
   margin: 2rem auto;
-  max-width: 800px;
-  min-height: 400px;
+  max-width: 900px;
+  min-height: 500px;
 }
 
+/* Zola widget replaces the anchor with an iframe; widget auto-resizes to content */
+.registry-embed-wrapper .zola-registry-iframe,
 .registry-embed-wrapper iframe {
-  width: 100%;
-  min-height: 400px;
+  width: 100% !important;
+  min-height: 500px;
   border: none;
   border-radius: var(--radius);
+  display: block;
 }
 
 .zola-placeholder {
