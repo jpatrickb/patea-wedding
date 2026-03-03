@@ -758,7 +758,7 @@ section {
 
 .tally-embed-wrapper {
   margin: 2.5rem auto 0;
-  max-width: 600px;
+  max-width: var(--max-width);
 }
 
 .tally-embed-wrapper iframe {
