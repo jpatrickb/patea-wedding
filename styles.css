@@ -756,17 +756,17 @@ section {
   display: block;
 }
 
-.zola-placeholder {
+.tally-embed-wrapper {
   margin: 2.5rem auto 0;
   max-width: 600px;
-  padding: 2rem;
-  border: 1px dashed var(--color-constellation-line);
+}
+
+.tally-embed-wrapper iframe {
+  width: 100%;
+  min-height: 177px;
+  border: none;
   border-radius: var(--radius);
-  color: var(--color-text-secondary);
-  font-size: 0.9rem;
-  font-style: italic;
-  opacity: 0.55;
-  line-height: 1.6;
+  display: block;
 }
 
 /* === RSVP === */
