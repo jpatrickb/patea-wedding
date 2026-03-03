@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="light dark" />
+  <title>Thank You — Thea & Patrick</title>
+  <meta name="description" content="Thank you for your RSVP — Thea Spigarelli & Patrick Beal, April 29, 2026." />
+  <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .thank-you-section {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 3rem 1.5rem;
+    }
+    .thank-you-section .section-title {
+      margin-bottom: 0.5rem;
+    }
+    .thank-you-section .section-subtitle {
+      margin-bottom: 2rem;
+      color: var(--color-text-secondary);
+    }
+    .thank-you-section p {
+      max-width: 36ch;
+      margin-bottom: 1.5rem;
+    }
+    .thank-you-section a {
+      display: inline-block;
+      margin-top: 1rem;
+      padding: 0.75rem 1.5rem;
+      background: var(--color-accent);
+      color: var(--color-bg);
+      text-decoration: none;
+      border-radius: var(--radius);
+      font-weight: 500;
+      transition: opacity var(--ease);
+    }
+    .thank-you-section a:hover {
+      opacity: 0.9;
+    }
+  </style>
+</head>
+<body>
+
+  <nav aria-label="Main navigation">
+    <a href="index.html" class="nav-brand">Thea &amp; Patrick</a>
+    <ul class="nav-links" id="nav-links" role="list">
+      <li><a href="index.html#story">Our Story</a></li>
+      <li><a href="index.html#schedule">Schedule</a></li>
+      <li><a href="index.html#photos">Photos</a></li>
+      <li><a href="index.html#registry">Registry</a></li>
+      <li><a href="index.html#rsvp">RSVP</a></li>
+      <li><a href="index.html#faq">FAQ</a></li>
+    </ul>
+    <button class="nav-hamburger" id="hamburger" aria-expanded="false" aria-controls="nav-links" aria-label="Toggle navigation">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </nav>
+
+  <section class="thank-you-section" aria-labelledby="thank-you-title">
+    <h2 id="thank-you-title" class="section-title">Thank You</h2>
+    <p class="section-subtitle">We're so excited to celebrate with you</p>
+    <p>
+      Your response has been received. We can't wait to see you on April 29, 2026!
+    </p>
+    <p>
+      If you have any questions, please reach out to us directly.
+    </p>
+    <a href="index.html">Back to Wedding Site</a>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>
